@@ -4,349 +4,1274 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Desafio 30 Dias - Compromisso</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&family=Courier+Prime&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800&family=Courier+Prime&display=swap" rel="stylesheet">
 
     <style>
+        /* ============================================================
+           DESIGN TOKENS
+           ============================================================ */
         :root {
-            --primary: #6DD5A9;
-            --primary-dark: #0C4437;
-            --blue-save: #42A5F5;
-            --neutral-bg: #F7F8FA;
-            --white: #FFFFFF;
-            --alert: #E57373;
-            --shadow: 0px 4px 20px rgba(0,0,0,0.05);
+            /* Brand */
+            --color-primary-100: #E6F9F1;
+            --color-primary-200: #BDEEDD;
+            --color-primary-400: #6DD5A9;
+            --color-primary-600: #3BAD7E;
+            --color-primary-900: #0C4437;
+
+            /* Accent – blue (savings) */
+            --color-accent-100: #E3F2FD;
+            --color-accent-400: #42A5F5;
+            --color-accent-700: #1565C0;
+
+            /* Danger */
+            --color-danger-100: #FFEBEE;
+            --color-danger-400: #EF5350;
+            --color-danger-700: #C62828;
+
+            /* Warning */
+            --color-warn-100: #FFF8E1;
+            --color-warn-400: #FFB300;
+
+            /* Success */
+            --color-success-100: #E8F5E9;
+            --color-success-700: #2E7D32;
+
+            /* Neutral */
+            --color-neutral-0:   #FFFFFF;
+            --color-neutral-50:  #F7F9FC;
+            --color-neutral-100: #EEF1F6;
+            --color-neutral-200: #DDE3ED;
+            --color-neutral-400: #9AA5B8;
+            --color-neutral-600: #5C6A82;
+            --color-neutral-900: #1A2233;
+
+            /* Semantic */
+            --bg-app:    var(--color-neutral-50);
+            --bg-card:   var(--color-neutral-0);
+            --text-base: var(--color-neutral-900);
+            --text-muted: var(--color-neutral-600);
+            --text-hint:  var(--color-neutral-400);
+            --border:     var(--color-neutral-200);
+
+            /* Typography */
+            --font-sans:  'Inter', sans-serif;
+            --font-display: 'Montserrat', sans-serif;
+            --font-mono:  'Courier Prime', monospace;
+
+            --text-xs:   10px;
+            --text-sm:   12px;
+            --text-base-size: 14px;
+            --text-md:   16px;
+            --text-lg:   18px;
+            --text-xl:   22px;
+            --text-2xl:  28px;
+            --text-3xl:  36px;
+
+            /* Spacing */
+            --space-1: 4px;
+            --space-2: 8px;
+            --space-3: 12px;
+            --space-4: 16px;
+            --space-5: 20px;
+            --space-6: 24px;
+            --space-8: 32px;
+            --space-10: 40px;
+
+            /* Radii */
+            --radius-sm:  6px;
+            --radius-md:  10px;
+            --radius-lg:  16px;
+            --radius-xl:  24px;
+            --radius-full: 9999px;
+
+            /* Shadows */
+            --shadow-xs: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-primary: 0 4px 14px rgba(109,213,169,0.35);
+            --shadow-accent:  0 4px 14px rgba(66,165,245,0.30);
+
+            /* Transitions */
+            --transition-fast: 150ms ease;
+            --transition-base: 250ms ease;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-        
-        body { background-color: var(--neutral-bg); height: 100vh; display: flex; justify-content: center; color: #333; }
-        
+        /* ============================================================
+           RESET & BASE
+           ============================================================ */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            font-size: var(--text-base-size);
+            color: var(--text-base);
+            background: var(--bg-app);
+            display: flex;
+            justify-content: center;
+            line-height: 1.5;
+        }
+
+        input, button { font-family: inherit; }
+        button { cursor: pointer; }
+
+        /* ============================================================
+           APP SHELL
+           ============================================================ */
         #app-container {
-            width: 100%; max-width: 414px; background: var(--white); height: 100%;
-            position: relative; overflow-y: auto; display: flex; flex-direction: column;
-            box-shadow: 0 0 50px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 430px;
+            background: var(--bg-card);
+            height: 100%;
+            position: relative;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 60px rgba(0,0,0,0.12);
         }
 
-        /* Typography & Components */
-        h1, h2, h3 { font-family: 'Montserrat', sans-serif; color: var(--primary-dark); }
-        h1 { font-size: 22px; margin-bottom: 5px; line-height: 1.2; }
-        p { font-size: 14px; color: #666; line-height: 1.5; margin-bottom: 15px; }
-
-        .btn {
-            background: var(--primary); color: var(--primary-dark); width: 100%; height: 50px;
-            border: none; border-radius: 12px; font-weight: 700; font-size: 16px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            box-shadow: 0 4px 10px rgba(109, 213, 169, 0.3); transition: 0.2s;
+        /* ============================================================
+           SCREENS
+           ============================================================ */
+        .screen {
+            display: none;
+            flex-direction: column;
+            padding: var(--space-6);
+            min-height: 100%;
+            animation: screenIn 0.35s ease;
+            overflow-y: auto;
+            padding-bottom: 100px;
         }
-        .btn:active { transform: scale(0.97); }
-        .btn.secondary { background: #EFFFF8; border: 1px solid var(--primary); box-shadow: none; }
-        .btn:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; color: #666; }
-
-        .card { background: white; border: 1px solid #eee; border-radius: 16px; padding: 16px; margin-bottom: 12px; box-shadow: var(--shadow); }
-        input { width: 100%; height: 48px; border: 1px solid #ddd; border-radius: 10px; padding: 0 15px; font-size: 16px; margin-bottom: 15px; }
-
-        /* Screens Transition */
-        .screen { display: none; flex-direction: column; padding: 24px; height: 100%; animation: fade 0.4s; overflow-y: auto; padding-bottom: 90px; }
         .screen.active { display: flex; }
-        @keyframes fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- ESTILOS DO ONBOARDING (NOVO) --- */
-        .villain-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-        .villain-card {
-            border: 1px solid #ddd; border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; transition: 0.2s;
+        @keyframes screenIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
-        .villain-card.selected {
-            border-color: var(--primary); background: #EFFFF8; font-weight: bold; transform: scale(1.02); box-shadow: 0 4px 12px rgba(109, 213, 169, 0.2);
-        }
-        .villain-icon { font-size: 24px; margin-bottom: 5px; display: block; }
 
-        /* Estilo do Contrato Digital */
-        .contract-paper {
-            background: #FFFDF0;
-            border: 2px dashed #D4C4A8;
-            padding: 24px;
-            border-radius: 8px;
-            margin: 20px 0;
-            font-family: 'Courier Prime', monospace;
-            font-size: 13px;
+        /* ============================================================
+           TYPOGRAPHY
+           ============================================================ */
+        .t-display {
+            font-family: var(--font-display);
+            font-size: var(--text-xl);
+            font-weight: 800;
+            color: var(--color-primary-900);
+            line-height: 1.2;
+            margin-bottom: var(--space-2);
+        }
+
+        .t-title {
+            font-family: var(--font-display);
+            font-size: var(--text-lg);
+            font-weight: 700;
+            color: var(--color-primary-900);
+            line-height: 1.3;
+        }
+
+        .t-subtitle {
+            font-size: var(--text-base-size);
+            color: var(--text-muted);
             line-height: 1.6;
+        }
+
+        .t-label {
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--color-neutral-600);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .t-caption {
+            font-size: var(--text-xs);
+            color: var(--text-hint);
+        }
+
+        /* ============================================================
+           BUTTONS
+           ============================================================ */
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+            width: 100%;
+            height: 52px;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-size: var(--text-md);
+            font-weight: 700;
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast);
+        }
+
+        .btn-primary {
+            background: var(--color-primary-400);
+            color: var(--color-primary-900);
+            box-shadow: var(--shadow-primary);
+        }
+        .btn-primary:active { transform: scale(0.97); box-shadow: none; }
+
+        .btn-secondary {
+            background: var(--color-primary-100);
+            color: var(--color-primary-900);
+            border: 1.5px solid var(--color-primary-400);
+            box-shadow: none;
+        }
+        .btn-secondary:active { transform: scale(0.97); }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1.5px solid var(--border);
+            box-shadow: none;
+        }
+
+        .btn:disabled {
+            background: var(--color-neutral-200);
+            color: var(--color-neutral-400);
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        .btn-sm {
+            height: 40px;
+            font-size: var(--text-base-size);
+            border-radius: var(--radius-md);
+        }
+
+        /* ============================================================
+           CARDS
+           ============================================================ */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            margin-bottom: var(--space-3);
+            box-shadow: var(--shadow-xs);
+        }
+
+        .card-accent {
+            border-left: 4px solid var(--color-accent-400);
+            border-color: var(--border);
+            border-left-color: var(--color-accent-400);
+        }
+
+        .card-primary {
+            background: linear-gradient(135deg, var(--color-primary-900) 0%, #1A6B52 100%);
+            border: none;
+            color: white;
+        }
+
+        /* ============================================================
+           FORM ELEMENTS
+           ============================================================ */
+        .form-group { margin-bottom: var(--space-4); }
+
+        .form-label {
+            display: block;
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: var(--space-2);
+        }
+
+        .form-input {
+            width: 100%;
+            height: 50px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 0 var(--space-4);
+            font-size: var(--text-md);
+            color: var(--text-base);
+            background: var(--color-neutral-50);
+            transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+            outline: none;
+        }
+        .form-input:focus {
+            border-color: var(--color-primary-400);
+            box-shadow: 0 0 0 3px rgba(109,213,169,0.20);
+            background: white;
+        }
+        .form-input::placeholder { color: var(--text-hint); }
+
+        .form-input-lg {
+            height: 60px;
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            color: var(--color-primary-900);
+        }
+
+        /* ============================================================
+           BADGE / CHIP
+           ============================================================ */
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-1);
+            padding: var(--space-1) var(--space-3);
+            border-radius: var(--radius-full);
+            font-size: var(--text-sm);
+            font-weight: 600;
+        }
+        .chip-accent { background: var(--color-accent-100); color: var(--color-accent-700); }
+        .chip-primary { background: var(--color-primary-100); color: var(--color-primary-900); }
+
+        /* ============================================================
+           ONBOARDING – INTRO SCREEN
+           ============================================================ */
+        #screen-intro {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 0;
+        }
+
+        .intro-icon-wrap {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--color-primary-100) 0%, var(--color-primary-200) 100%);
+            border-radius: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 52px;
+            margin: 0 auto var(--space-6);
+            box-shadow: var(--shadow-primary);
+        }
+
+        .intro-eyebrow {
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--color-primary-600);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: var(--space-2);
+        }
+
+        .intro-heading {
+            font-family: var(--font-display);
+            font-size: var(--text-2xl);
+            font-weight: 800;
+            color: var(--color-primary-900);
+            line-height: 1.2;
+            margin-bottom: var(--space-3);
+        }
+
+        .intro-body {
+            font-size: var(--text-base-size);
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: var(--space-8);
+            max-width: 300px;
+        }
+
+        .step-dots {
+            display: flex;
+            gap: var(--space-2);
+            margin-bottom: var(--space-6);
+        }
+        .step-dot {
+            width: 8px; height: 8px;
+            border-radius: var(--radius-full);
+            background: var(--border);
+        }
+        .step-dot.active {
+            width: 24px;
+            background: var(--color-primary-400);
+        }
+
+        /* ============================================================
+           ONBOARDING – VILLAIN SCREEN
+           ============================================================ */
+        .villain-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-3);
+            margin: var(--space-4) 0;
+        }
+
+        .villain-card {
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4) var(--space-3);
+            text-align: center;
+            cursor: pointer;
+            transition: border-color var(--transition-base), background var(--transition-base), transform var(--transition-fast);
+        }
+        .villain-card:active { transform: scale(0.97); }
+        .villain-card.selected {
+            border-color: var(--color-primary-400);
+            background: var(--color-primary-100);
+        }
+
+        .villain-icon {
+            font-size: 28px;
+            margin-bottom: var(--space-2);
+            display: block;
+        }
+
+        .villain-label {
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--text-base);
+        }
+        .villain-card.selected .villain-label { color: var(--color-primary-900); }
+
+        /* ============================================================
+           CONTRACT SCREEN
+           ============================================================ */
+        .contract-paper {
+            background: #FFFEF5;
+            border: 2px dashed #D4C99A;
+            padding: var(--space-6);
+            border-radius: var(--radius-md);
+            margin: var(--space-5) 0;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            line-height: 1.8;
             color: #444;
+        }
+
+        .contract-header {
+            text-align: center;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-bottom: 2px solid #D4C99A;
+            padding-bottom: var(--space-3);
+            margin-bottom: var(--space-4);
+            letter-spacing: 0.04em;
+        }
+
+        .contract-highlight {
+            font-weight: bold;
+            color: #000;
+            border-bottom: 1px solid #aaa;
+        }
+
+        .signature-area {
+            margin-top: var(--space-8);
+            border-top: 2px solid #333;
+            padding-top: var(--space-2);
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+        }
+        .signature-placeholder {
+            font-family: var(--font-sans);
+            font-size: var(--text-sm);
+            color: var(--text-hint);
+        }
+        .signature-text {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 28px;
+            color: #1a237e;
+        }
+
+        /* ============================================================
+           DASHBOARD
+           ============================================================ */
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-5);
+        }
+
+        .dash-greeting { font-size: var(--text-lg); font-weight: 700; color: var(--color-primary-900); }
+        .dash-sub { font-size: var(--text-sm); color: var(--text-hint); margin-top: 2px; }
+
+        /* Hero balance card */
+        .balance-card {
+            background: linear-gradient(135deg, var(--color-primary-900) 0%, #1A6B52 100%);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            margin-bottom: var(--space-4);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .balance-card::after {
+            content: '';
+            position: absolute;
+            right: -30px;
+            top: -40px;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+        }
+
+        .balance-card::before {
+            content: '';
+            position: absolute;
+            right: 20px;
+            bottom: -60px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.04);
+        }
+
+        .balance-label {
+            font-size: var(--text-sm);
+            opacity: 0.75;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            font-weight: 600;
+            margin-bottom: var(--space-2);
+        }
+
+        .balance-amount {
+            font-family: var(--font-display);
+            font-size: var(--text-3xl);
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: var(--space-4);
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            margin-bottom: var(--space-2);
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--color-primary-400);
+            border-radius: var(--radius-full);
+            transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        .progress-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: var(--text-sm);
+            opacity: 0.8;
+        }
+
+        /* Stats strip */
+        .stats-strip {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-3);
+            margin-bottom: var(--space-4);
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            box-shadow: var(--shadow-xs);
+        }
+
+        .stat-icon {
+            font-size: 20px;
+            margin-bottom: var(--space-2);
+        }
+
+        .stat-value {
+            font-family: var(--font-display);
+            font-size: var(--text-xl);
+            font-weight: 800;
+            color: var(--color-primary-900);
+            line-height: 1;
+            margin-bottom: 2px;
+        }
+
+        .stat-label {
+            font-size: var(--text-xs);
+            color: var(--text-hint);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        /* Section headers */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-3);
+        }
+
+        /* Badge grid */
+        .badge-grid {
+            display: flex;
+            gap: var(--space-3);
+            overflow-x: auto;
+            padding: var(--space-1) var(--space-1) var(--space-2);
+            scrollbar-width: none;
+        }
+        .badge-grid::-webkit-scrollbar { display: none; }
+
+        .badge-item {
+            min-width: 68px;
+            height: 80px;
+            background: var(--color-neutral-100);
+            border-radius: var(--radius-md);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-1);
+            opacity: 0.45;
+            filter: grayscale(1);
+            flex-shrink: 0;
+        }
+
+        .badge-item.unlocked {
+            opacity: 1;
+            filter: none;
+            background: var(--color-warn-100);
+            border: 1.5px solid var(--color-warn-400);
+        }
+
+        .badge-emoji { font-size: 22px; }
+        .badge-name { font-size: 9px; font-weight: 700; color: var(--text-muted); text-align: center; }
+
+        /* Calendar quick-link */
+        .calendar-link {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-4);
+            background: var(--color-neutral-50);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: background var(--transition-fast);
+        }
+        .calendar-link:active { background: var(--color-primary-100); }
+
+        /* ============================================================
+           REGISTER SCREEN
+           ============================================================ */
+        .reg-header {
+            text-align: center;
+            margin-bottom: var(--space-5);
+        }
+
+        .day-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            background: var(--color-primary-100);
+            color: var(--color-primary-900);
+            border-radius: var(--radius-full);
+            padding: var(--space-1) var(--space-4);
+            font-size: var(--text-sm);
+            font-weight: 700;
+            margin-bottom: var(--space-3);
+        }
+
+        .type-selector {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+            margin-bottom: var(--space-4);
+        }
+
+        .type-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-3) var(--space-4);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            background: var(--color-neutral-50);
+        }
+
+        .type-btn-icon { font-size: 20px; }
+
+        .type-btn-text { flex: 1; }
+        .type-btn-title { font-size: var(--text-base-size); font-weight: 600; color: var(--text-base); }
+        .type-btn-sub { font-size: var(--text-xs); color: var(--text-hint); margin-top: 1px; }
+
+        .type-btn-check {
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px;
+            color: white;
+            transition: all var(--transition-fast);
+        }
+
+        .type-btn.active-blue {
+            border-color: var(--color-accent-400);
+            background: var(--color-accent-100);
+        }
+        .type-btn.active-blue .type-btn-title { color: var(--color-accent-700); }
+        .type-btn.active-blue .type-btn-check { background: var(--color-accent-400); border-color: var(--color-accent-400); }
+
+        .type-btn.active-red {
+            border-color: var(--color-danger-400);
+            background: var(--color-danger-100);
+        }
+        .type-btn.active-red .type-btn-title { color: var(--color-danger-700); }
+        .type-btn.active-red .type-btn-check { background: var(--color-danger-400); border-color: var(--color-danger-400); }
+
+        .type-btn.active-green {
+            border-color: var(--color-success-700);
+            background: var(--color-success-100);
+        }
+        .type-btn.active-green .type-btn-title { color: var(--color-success-700); }
+        .type-btn.active-green .type-btn-check { background: var(--color-success-700); border-color: var(--color-success-700); }
+
+        /* Today's log entries */
+        .entry-list { margin-bottom: var(--space-5); }
+
+        .entry-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-3) var(--space-1);
+            border-bottom: 1px solid var(--color-neutral-100);
+            font-size: var(--text-base-size);
+        }
+
+        .entry-label-wrap { display: flex; align-items: center; gap: var(--space-2); }
+        .entry-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .entry-dot-blue { background: var(--color-accent-400); }
+        .entry-dot-red { background: var(--color-danger-400); }
+        .entry-dot-green { background: var(--color-success-700); }
+
+        .day-summary {
+            background: var(--color-neutral-50);
+            border-radius: var(--radius-md);
+            padding: var(--space-3) var(--space-4);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-4);
+        }
+
+        /* ============================================================
+           CALENDAR SCREEN
+           ============================================================ */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: var(--space-2);
+            margin-top: var(--space-4);
+        }
+
+        .cal-day {
+            aspect-ratio: 1;
+            border-radius: var(--radius-sm);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--text-sm);
+            font-weight: 700;
+            background: var(--color-neutral-100);
+            color: var(--text-hint);
+            border: 1.5px solid transparent;
             position: relative;
         }
-        .contract-paper strong { color: #000; border-bottom: 1px solid #aaa; }
-        .signature-line {
-            margin-top: 30px;
-            border-bottom: 2px solid #333;
-            height: 30px;
-            font-family: 'Brush Script MT', cursive;
-            font-size: 24px;
-            color: #1a237e;
+
+        .cal-day span { font-size: 8px; font-weight: 500; margin-top: 2px; }
+        .cal-day.green { background: var(--color-accent-100); color: var(--color-accent-700); border-color: var(--color-accent-400); }
+        .cal-day.red { background: var(--color-danger-100); color: var(--color-danger-700); border-color: var(--color-danger-400); }
+        .cal-day.orange { background: var(--color-warn-100); color: #E65100; border-color: var(--color-warn-400); }
+        .cal-day.active { background: white; color: var(--color-primary-900); border: 2px dashed var(--color-primary-400); }
+
+        .cal-legend {
             display: flex;
-            align-items: flex-end;
+            gap: var(--space-4);
+            margin-top: var(--space-4);
+            justify-content: center;
         }
 
-        /* --- ESTILOS DO APP (MANTIDOS) --- */
-        .cal-day {
-            aspect-ratio: 1; border-radius: 8px; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; font-size: 12px; font-weight: bold;
-            background: #f0f0f0; color: #999; border: 1px solid transparent; position: relative;
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+            font-size: var(--text-xs);
+            color: var(--text-muted);
         }
-        .cal-day span { font-size: 9px; font-weight: normal; margin-top: 2px; }
-        .cal-day.green { background: #E3F2FD; color: #1565C0; border-color: #90CAF9; }
-        .cal-day.orange { background: #FFF3E0; color: #EF6C00; border-color: #FFCC80; }
-        .cal-day.red { background: #FFEBEE; color: #C62828; border-color: #EF9A9A; }
-        .cal-day.active { background: white; color: var(--primary-dark); border: 2px dashed var(--primary); }
-        
-        .calendar-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 15px; }
 
-        .toggle-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
-        .toggle-btn { padding: 14px; border: 1px solid #ddd; border-radius: 10px; text-align: center; opacity: 0.7; cursor: pointer; font-weight: 500; transition: 0.2s; }
-        .toggle-btn.active.blue { background: var(--blue-save); color: white; opacity: 1; border-color: var(--blue-save); font-weight: bold; }
-        .toggle-btn.active.green { background: #E8F5E9; color: #2E7D32; opacity: 1; border-color: #2E7D32; font-weight: bold; }
-        .toggle-btn.active.red { background: var(--alert); color: white; opacity: 1; border-color: #B71C1C; font-weight: bold; }
+        .legend-dot { width: 8px; height: 8px; border-radius: 2px; }
 
+        /* ============================================================
+           RANKING SCREEN
+           ============================================================ */
+        .rank-list {
+            background: white;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .rank-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-4);
+            border-bottom: 1px solid var(--color-neutral-100);
+        }
+        .rank-row:last-child { border-bottom: none; }
+        .rank-row.highlight { background: var(--color-primary-100); }
+
+        .rank-left { display: flex; align-items: center; gap: var(--space-3); }
+        .rank-pos {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: var(--color-neutral-100);
+            display: flex; align-items: center; justify-content: center;
+            font-size: var(--text-sm);
+            font-weight: 700;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+        .rank-pos.gold { background: #FFF8E1; color: #F9A825; }
+        .rank-pos.silver { background: #FAFAFA; color: #757575; }
+        .rank-pos.bronze { background: #FBE9E7; color: #BF360C; }
+
+        .rank-name { font-weight: 600; font-size: var(--text-base-size); }
+        .rank-pts { font-size: var(--text-sm); font-weight: 700; color: var(--color-primary-900); }
+
+        /* ============================================================
+           BOTTOM NAV
+           ============================================================ */
         .nav-bar {
-            position: absolute; bottom: 0; width: 100%; height: 65px; background: white; border-top: 1px solid #eee;
-            display: flex; justify-content: space-around; align-items: center; z-index: 99;
+            position: sticky;
+            bottom: 0;
+            width: 100%;
+            height: 68px;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
         }
-        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #999; cursor: pointer; flex: 1; }
-        .nav-item.active { color: var(--primary-dark); font-weight: bold; }
-        .nav-fab { width: 48px; height: 48px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(109, 213, 169, 0.4); color: var(--primary-dark); }
-        
-        .badge-grid { display: flex; gap: 10px; overflow-x: auto; padding: 5px; scrollbar-width: none; }
-        .badge-item { min-width: 70px; height: 80px; background: #f9f9f9; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0.5; filter: grayscale(1); padding: 5px; text-align: center; }
-        .badge-item.unlocked { opacity: 1; filter: grayscale(0); background: #FFFDE7; border: 1px solid #FBC02D; }
-        
-        .rank-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #f5f5f5; }
-        .rank-row.highlight { background: #EFFFF8; border-radius: 8px; border: 1px solid var(--primary); }
 
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            font-size: var(--text-xs);
+            font-weight: 500;
+            color: var(--text-hint);
+            cursor: pointer;
+            flex: 1;
+            padding: var(--space-2) 0;
+            transition: color var(--transition-fast);
+        }
+        .nav-item.active { color: var(--color-primary-900); font-weight: 700; }
+        .nav-item-icon { font-size: 20px; }
+
+        .nav-fab {
+            width: 52px;
+            height: 52px;
+            background: var(--color-primary-400);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: var(--color-primary-900);
+            margin-bottom: 18px;
+            box-shadow: var(--shadow-primary);
+            transition: transform var(--transition-fast);
+            flex-shrink: 0;
+        }
+        .nav-fab:active { transform: scale(0.93); }
+
+        /* ============================================================
+           UTILITIES
+           ============================================================ */
+        .spacer { flex: 1; }
+        .mt-auto { margin-top: auto; }
+        .text-center { text-align: center; }
+        .mb-4 { margin-bottom: var(--space-4); }
+        .mb-5 { margin-bottom: var(--space-5); }
+        .mb-6 { margin-bottom: var(--space-6); }
+        .w-full { width: 100%; }
+
+        .hint-box {
+            background: var(--color-neutral-50);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-3) var(--space-4);
+            font-size: var(--text-sm);
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: var(--space-5) 0;
+        }
     </style>
 </head>
 <body>
 
 <div id="app-container">
-    
-    <section id="screen-intro" class="screen active" style="justify-content: center;">
-        <div style="font-size: 60px; text-align: center; margin-bottom: 20px;">🛡️</div>
-        <h1 style="text-align: center;">Bem-vindo ao Dia 0</h1>
-        <h2 style="text-align: center; font-size: 16px; font-weight: normal; margin-top: 10px;">A Batalha contra a Impulsividade</h2>
-        <p style="text-align: center; margin-top: 20px;">
-            Sua missão é vencer o "vilão" dos gastos emocionais pelos próximos 30 dias. <br><br>
-            Para começar, precisamos identificar seu inimigo.
-        </p>
-        <button class="btn" onclick="goToScreen('screen-villain')">Identificar meu Vilão</button>
+
+    <!-- =====================================================
+         SCREEN: INTRO
+    ====================================================== -->
+    <section id="screen-intro" class="screen active">
+        <div class="step-dots" style="margin: var(--space-6) auto 0;">
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+        </div>
+
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+            <div class="intro-icon-wrap">🛡️</div>
+            <div class="intro-eyebrow">Bem-vindo ao Dia 0</div>
+            <h1 class="intro-heading">A Batalha Contra<br>a Impulsividade</h1>
+            <p class="intro-body">
+                Identifique seus gatilhos, assine um compromisso e acompanhe cada dia da sua jornada de 30 dias para dominar seus gastos.
+            </p>
+        </div>
+
+        <button class="btn btn-primary" onclick="goToScreen('screen-villain')">
+            Começar Agora →
+        </button>
+        <div style="height: var(--space-4);"></div>
     </section>
 
+    <!-- =====================================================
+         SCREEN: VILLAIN
+    ====================================================== -->
     <section id="screen-villain" class="screen">
-        <h1>Quem é seu Vilão?</h1>
-        <p>Escolha a categoria que representa seu maior gatilho de gasto impulsivo:</p>
-        
+        <div class="step-dots" style="margin-bottom: var(--space-5);">
+            <div class="step-dot"></div>
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+        </div>
+
+        <h1 class="t-display">Quem é seu Vilão?</h1>
+        <p class="t-subtitle mb-5">Escolha a categoria que representa seu maior gatilho de gasto impulsivo.</p>
+
         <div class="villain-grid">
             <div class="villain-card" onclick="selectVillain(this, 'Delivery')">
-                <span class="villain-icon">🍕</span> Delivery
+                <span class="villain-icon">🍕</span>
+                <span class="villain-label">Delivery</span>
             </div>
             <div class="villain-card" onclick="selectVillain(this, 'Compras Online')">
-                <span class="villain-icon">🛍️</span> Compras
+                <span class="villain-icon">🛍️</span>
+                <span class="villain-label">Compras</span>
             </div>
             <div class="villain-card" onclick="selectVillain(this, 'Apps Transporte')">
-                <span class="villain-icon">🚗</span> Transporte
+                <span class="villain-icon">🚗</span>
+                <span class="villain-label">Transporte</span>
             </div>
             <div class="villain-card" onclick="selectVillain(this, 'Estética/Moda')">
-                <span class="villain-icon">💅</span> Estética
+                <span class="villain-icon">💅</span>
+                <span class="villain-label">Estética</span>
             </div>
             <div class="villain-card" onclick="selectVillain(this, 'Mercado/Doces')">
-                <span class="villain-icon">🍫</span> Mercado
+                <span class="villain-icon">🍫</span>
+                <span class="villain-label">Mercado</span>
             </div>
             <div class="villain-card" onclick="selectVillain(this, 'Jogos/Apps')">
-                <span class="villain-icon">🎮</span> Jogos
+                <span class="villain-icon">🎮</span>
+                <span class="villain-label">Jogos</span>
             </div>
         </div>
 
-        <div style="margin-top: 10px;">
-            <label style="font-size: 12px; font-weight: bold;">Seu Nome de Jogador</label>
-            <input type="text" id="setupName" placeholder="Ex: Viajante">
+        <div class="form-group">
+            <label class="form-label">Seu nome de jogador</label>
+            <input class="form-input" type="text" id="setupName" placeholder="Ex: Viajante">
         </div>
 
-        <button class="btn" onclick="goToScreen('screen-goal')">Continuar</button>
+        <div class="spacer"></div>
+        <button class="btn btn-primary" onclick="goToScreen('screen-goal')">Continuar →</button>
     </section>
 
+    <!-- =====================================================
+         SCREEN: GOAL
+    ====================================================== -->
     <section id="screen-goal" class="screen">
-        <h1>Defina sua Meta</h1>
-        <p>O pré-compromisso aumenta a chance de sucesso.</p>
-        
+        <div class="step-dots" style="margin-bottom: var(--space-5);">
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+        </div>
+
+        <h1 class="t-display">Defina sua Meta</h1>
+        <p class="t-subtitle mb-5">O pré-compromisso aumenta a chance de sucesso em até 3x.</p>
+
         <div class="card">
-            <label style="font-weight: bold; font-size: 14px;">Quanto você quer economizar?</label>
-            <p style="font-size: 12px; margin-bottom: 5px;">Ao evitar seu vilão, quanto você quer juntar em 30 dias?</p>
-            <input type="number" id="setupGoal" placeholder="Ex: 300,00" style="font-size: 20px; font-weight: bold; color: var(--primary-dark);">
-            <div style="font-size: 11px; color: #888; background: #eee; padding: 8px; border-radius: 6px;">
-                💡 Dica: Comece com uma meta realista (R$ 50 - R$ 200) para garantir sua primeira vitória.
+            <label class="form-label">Quanto quer economizar em 30 dias?</label>
+            <div style="position: relative; margin-bottom: var(--space-3);">
+                <span style="position:absolute; left:16px; top:50%; transform:translateY(-50%); font-size:20px; font-weight:700; color:var(--text-hint);">R$</span>
+                <input class="form-input form-input-lg" type="number" id="setupGoal" placeholder="0,00"
+                    style="padding-left: 52px; padding-right: var(--space-4);">
+            </div>
+            <div class="hint-box">
+                💡 Comece com uma meta realista (R$ 50–200) para garantir sua primeira vitória.
             </div>
         </div>
 
-        <button class="btn" onclick="prepareContract()">Gerar Contrato</button>
+        <div class="spacer"></div>
+        <button class="btn btn-primary" onclick="prepareContract()">Gerar Compromisso →</button>
     </section>
 
+    <!-- =====================================================
+         SCREEN: CONTRACT
+    ====================================================== -->
     <section id="screen-contract" class="screen">
-        <h1>Seu Compromisso</h1>
-        <p>Para oficializar o desafio, assine digitalmente abaixo.</p>
+        <div class="step-dots" style="margin-bottom: var(--space-5);">
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot active"></div>
+        </div>
+
+        <h1 class="t-display">Seu Compromisso</h1>
+        <p class="t-subtitle">Assine digitalmente para oficializar o desafio.</p>
 
         <div class="contract-paper">
-            <div style="text-align: center; font-weight: bold; margin-bottom: 15px; text-transform: uppercase; border-bottom: 2px solid #D4C4A8; padding-bottom: 10px;">Termo de Compromisso<br>Desafio 30 Dias</div>
-            
-            Eu, <strong id="contract-name">Usuário</strong>, declaro estar ciente do desafio de enfrentar o vilão <strong id="contract-villain">Gasto</strong>.
+            <div class="contract-header">Termo de Compromisso<br>Desafio 30 Dias</div>
+
+            Eu, <strong class="contract-highlight" id="contract-name">Usuário</strong>, declaro estar ciente do desafio de enfrentar o vilão <strong class="contract-highlight" id="contract-villain">Gasto</strong>.
             <br><br>
-            Comprometo-me a vigiar meus impulsos e desenvolver autocontrole para atingir a meta de economia de <strong id="contract-goal">R$ 0,00</strong> ao final da jornada.
-            
-            <div class="signature-line" id="signature-place">
-                <span style="color: #ccc; font-family: 'Inter'; font-size: 12px; align-self: center;">Aguardando assinatura...</span>
+            Comprometo-me a vigiar meus impulsos e desenvolver autocontrole para atingir a meta de economia de <strong class="contract-highlight" id="contract-goal">R$ 0,00</strong> ao final da jornada de 30 dias.
+
+            <div class="signature-area" id="signature-place">
+                <span class="signature-placeholder">Aguardando assinatura...</span>
             </div>
         </div>
 
-        <button class="btn" id="btn-sign" onclick="signContract()">Assinar Digitalmente ✍️</button>
+        <div class="spacer"></div>
+        <button class="btn btn-primary" id="btn-sign" onclick="signContract()">✍️ Assinar Digitalmente</button>
     </section>
 
+    <!-- =====================================================
+         SCREEN: DASHBOARD
+    ====================================================== -->
     <section id="screen-dashboard" class="screen">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <div class="dash-header">
             <div>
-                <h2 style="font-size: 18px;">Olá, <span id="dash-name">User</span></h2>
-                <span style="font-size: 12px; color: #888;">Dia <span id="dash-day">1</span> de 30</span>
+                <div class="dash-greeting">Olá, <span id="dash-name">User</span> 👋</div>
+                <div class="dash-sub">Dia <span id="dash-day">1</span> de 30</div>
             </div>
-            <div style="background: #E3F2FD; color: #1565C0; padding: 5px 12px; border-radius: 20px; font-weight: bold; font-size: 12px;">
-                🏆 <span id="dash-points">0</span> pts
+            <div class="chip chip-accent">🏆 <span id="dash-points">0</span> pts</div>
+        </div>
+
+        <!-- Hero balance card -->
+        <div class="balance-card">
+            <div class="balance-label">Saldo acumulado</div>
+            <div class="balance-amount">R$ <span id="dash-current-net">0,00</span></div>
+
+            <div class="progress-track">
+                <div class="progress-fill" id="dash-progress-bar" style="width:0%"></div>
+            </div>
+            <div class="progress-row">
+                <span>Foco: <span id="dash-villain-display" style="font-weight:700;">Vilão</span></span>
+                <span><span id="dash-percent">0%</span> da meta R$ <span id="dash-goal-val">0</span></span>
             </div>
         </div>
 
-        <div class="card" style="margin-top: 5px; border-left: 5px solid var(--blue-save);">
-            <div style="display: flex; justify-content: space-between; align-items: flex-end;">
-                <div style="font-size: 11px; color: #666; font-weight: bold; text-transform: uppercase;">Progresso da Meta</div>
-                <div style="font-size: 11px; color: #999;">Meta: R$ <span id="dash-goal-val">0</span></div>
+        <!-- Stats strip -->
+        <div class="stats-strip">
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-value" id="stat-saved">R$ 0</div>
+                <div class="stat-label">Economizado</div>
             </div>
-            
-            <div style="font-size: 32px; font-weight: 800; color: var(--blue-save); margin: 5px 0;">
-                R$ <span id="dash-current-net">0,00</span>
-            </div>
-            
-            <div style="display: flex; justify-content: space-between; font-size: 11px; color: #666; margin-bottom: 5px;">
-                <span>Acumulado</span>
-                <span id="dash-percent">0%</span>
-            </div>
-
-            <div style="width: 100%; background: #eee; height: 8px; border-radius: 4px; overflow: hidden;">
-                <div id="dash-progress-bar" style="width: 0%; background: var(--blue-save); height: 100%; transition: 1s;"></div>
-            </div>
-            
-            <div style="margin-top: 8px; font-size: 10px; color: #888; text-align: center;">
-                Foco: Combater <span id="dash-villain-display" style="font-weight: bold;">Vilão</span>
+            <div class="stat-card">
+                <div class="stat-icon">😈</div>
+                <div class="stat-value" id="stat-impulse">R$ 0</div>
+                <div class="stat-label">Impulsos</div>
             </div>
         </div>
 
-        <h3 style="font-size: 12px; margin-bottom: 8px;">CONQUISTAS</h3>
+        <!-- Badges -->
+        <div class="section-header">
+            <span class="t-label">Conquistas</span>
+        </div>
         <div class="badge-grid" id="badge-container"></div>
 
-        <div class="card" style="text-align: center; padding: 12px; margin-top: 10px; cursor: pointer;" onclick="navTo('screen-calendar')">
-            <span style="font-size: 20px;">📅</span> <span style="font-weight: bold; font-size: 12px;">Ver Calendário</span>
+        <div class="divider"></div>
+
+        <!-- Calendar shortcut -->
+        <div class="calendar-link" onclick="navTo('screen-calendar')">
+            <span style="font-size:24px;">📅</span>
+            <div style="flex:1;">
+                <div style="font-weight:600; font-size:var(--text-base-size);">Ver Jornada Diária</div>
+                <div class="t-caption">Calendário de 30 dias</div>
+            </div>
+            <span style="color:var(--text-hint);">›</span>
         </div>
     </section>
 
+    <!-- =====================================================
+         SCREEN: REGISTER
+    ====================================================== -->
     <section id="screen-register" class="screen">
-        <h2 style="text-align: center;">Dia <span id="reg-day">1</span></h2>
-        
-        <div class="card" style="margin-top: 15px;">
-            <label style="font-size: 12px; font-weight: bold;">VALOR (R$)</label>
-            <input type="number" id="reg-amount" placeholder="0,00" inputmode="decimal">
-            
-            <div class="toggle-group">
-                <div id="btn-save" class="toggle-btn active blue" onclick="setEntryType('saved')">
-                    💰 Economizei (Venci o Vilão)
-                    <div style="font-size: 9px; font-weight: normal;">Soma na meta (+ Pontos)</div>
-                </div>
-                <div id="btn-imp" class="toggle-btn" onclick="setEntryType('impulse')">
-                    😈 Gastei por Impulso
-                    <div style="font-size: 9px; font-weight: normal;">Subtrai da meta (- Pontos)</div>
-                </div>
-                <div id="btn-plan" class="toggle-btn" onclick="setEntryType('planned')">
-                    😇 Gasto Planejado
-                    <div style="font-size: 9px; font-weight: normal;">Neutro (Apenas registro)</div>
-                </div>
-            </div>
-            
-            <button class="btn" onclick="addEntry()" style="font-size: 14px; height: 44px; margin-top: 10px;">Confirmar Registro</button>
+        <div class="reg-header">
+            <div class="day-badge">📆 Dia <span id="reg-day">1</span></div>
+            <h2 class="t-title">Registrar Movimento</h2>
         </div>
 
-        <div id="today-list" style="margin-bottom: 20px;"></div>
-
-        <div style="margin-top: auto;">
-            <div style="text-align: right; margin-bottom: 10px; font-size: 13px;">
-                Saldo do Dia: <strong>R$ <span id="today-net">0,00</span></strong>
+        <div class="card mb-4">
+            <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">Valor (R$)</label>
+                <input class="form-input form-input-lg" type="number"
+                    id="reg-amount" placeholder="0,00" inputmode="decimal">
             </div>
-            <button class="btn secondary" onclick="finishDay()">Encerrar Dia ✅</button>
+        </div>
+
+        <div class="type-selector">
+            <div id="btn-save" class="type-btn active-blue" onclick="setEntryType('saved')">
+                <span class="type-btn-icon">💰</span>
+                <div class="type-btn-text">
+                    <div class="type-btn-title">Economizei</div>
+                    <div class="type-btn-sub">Venci o Vilão · +Pontos</div>
+                </div>
+                <div class="type-btn-check">✓</div>
+            </div>
+            <div id="btn-imp" class="type-btn" onclick="setEntryType('impulse')">
+                <span class="type-btn-icon">😈</span>
+                <div class="type-btn-text">
+                    <div class="type-btn-title">Gastei por Impulso</div>
+                    <div class="type-btn-sub">Subtrai da meta · −Pontos</div>
+                </div>
+                <div class="type-btn-check"></div>
+            </div>
+            <div id="btn-plan" class="type-btn" onclick="setEntryType('planned')">
+                <span class="type-btn-icon">😇</span>
+                <div class="type-btn-text">
+                    <div class="type-btn-title">Gasto Planejado</div>
+                    <div class="type-btn-sub">Neutro · Apenas registro</div>
+                </div>
+                <div class="type-btn-check"></div>
+            </div>
+        </div>
+
+        <button class="btn btn-primary btn-sm w-full mb-4" onclick="addEntry()">Confirmar Registro</button>
+
+        <div class="entry-list" id="today-list"></div>
+
+        <div class="mt-auto">
+            <div class="day-summary">
+                <span class="t-label">Saldo do Dia</span>
+                <strong style="font-size:var(--text-lg); color:var(--color-primary-900);">R$ <span id="today-net">0,00</span></strong>
+            </div>
+            <button class="btn btn-secondary" onclick="finishDay()">Encerrar Dia ✅</button>
         </div>
     </section>
 
+    <!-- =====================================================
+         SCREEN: CALENDAR
+    ====================================================== -->
     <section id="screen-calendar" class="screen">
-        <h2>Jornada Diária</h2>
+        <h2 class="t-display">Jornada Diária</h2>
+        <p class="t-subtitle">Acompanhe seus 30 dias de desafio.</p>
+
         <div class="calendar-grid" id="cal-grid"></div>
-        <div style="margin-top: 15px; font-size: 10px; color: #666; text-align: center;">
-            <span style="color:#1565C0">🟦 Saldo Positivo</span> | <span style="color:#C62828">🟥 Saldo Negativo</span>
+
+        <div class="cal-legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background:var(--color-accent-400);"></div>
+                Positivo
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background:var(--color-warn-400);"></div>
+                Neutro
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background:var(--color-danger-400);"></div>
+                Negativo
+            </div>
         </div>
     </section>
 
+    <!-- =====================================================
+         SCREEN: RANKING
+    ====================================================== -->
     <section id="screen-ranking" class="screen">
-        <h2>Ranking (Pontos)</h2>
-        <p style="font-size: 12px; color: #666; margin-bottom: 15px;">1 Ponto = R$ 1 Real de Saldo Líquido</p>
-        <div id="ranking-list" style="background: white; border-radius: 12px; border: 1px solid #eee;"></div>
+        <h2 class="t-display">Ranking</h2>
+        <p class="t-subtitle mb-5">1 Ponto = R$ 1 de saldo líquido acumulado.</p>
+        <div class="rank-list" id="ranking-list"></div>
     </section>
 
-    <nav class="nav-bar" id="navbar" style="display: none;">
-        <div class="nav-item active" onclick="navTo('screen-dashboard', this)">🏠<br>Início</div>
+    <!-- =====================================================
+         BOTTOM NAV
+    ====================================================== -->
+    <nav class="nav-bar" id="navbar" style="display:none;">
+        <div class="nav-item active" onclick="navTo('screen-dashboard', this)">
+            <span class="nav-item-icon">🏠</span>Início
+        </div>
         <div class="nav-fab" onclick="navTo('screen-register', null)">+</div>
-        <div class="nav-item" onclick="navTo('screen-ranking', this)">🏆<br>Rank</div>
+        <div class="nav-item" onclick="navTo('screen-ranking', this)">
+            <span class="nav-item-icon">🏆</span>Rank
+        </div>
     </nav>
 
 </div>
 
 <script>
-    // --- ESTADO & CONFIG --- //
+    /* ================================================================
+       STATE & CONFIG
+    ================================================================ */
     const BADGES = [
-        { id: 'b1', icon: '🌱', name: 'Início', desc: 'Dia 1 OK' },
+        { id: 'b1', icon: '🌱', name: 'Início',  desc: 'Dia 1 OK' },
         { id: 'b2', icon: '🐷', name: 'Cofrinho', desc: 'Acumulou R$ 50' },
-        { id: 'b3', icon: '🚀', name: 'Foguete', desc: '50% da Meta' },
-        { id: 'b4', icon: '💎', name: 'Rico', desc: 'Meta Batida' }
+        { id: 'b3', icon: '🚀', name: 'Foguete',  desc: '50% da Meta' },
+        { id: 'b4', icon: '💎', name: 'Rico',     desc: 'Meta Batida' }
     ];
 
     let bots = [
-        { name: "Ana P.", points: 120 },
-        { name: "Carlos", points: 45 },
+        { name: "Ana P.",    points: 120 },
+        { name: "Carlos",    points: 45  },
         { name: "Julia Bot", points: 200 }
     ];
 
     let state = {
-        started: false, // Novo flag para o onboarding
+        started: false,
         name: 'Usuário',
-        villain: '', // Categoria do vilão
+        villain: '',
         goal: 0,
         day: 1,
-        
         totalSaved: 0,
         totalImpulse: 0,
         netBalance: 0,
-        
         history: [],
         badges: [],
-
         todayLog: [],
         todaySaved: 0,
         todayImpulse: 0,
         todayPlanned: 0
     };
 
-    // --- INIT --- //
+    /* ================================================================
+       INIT
+    ================================================================ */
     function init() {
-        const saved = localStorage.getItem('eco_v5_day0');
+        const saved = localStorage.getItem('eco_v6_day0');
         if (saved) {
             state = JSON.parse(saved);
-            // Se já começou (passou do dia 0), vai pro dashboard
             if (state.started) {
                 updateAll();
                 navTo('screen-dashboard');
@@ -355,7 +1280,9 @@
         }
     }
 
-    // --- LÓGICA DO DIA 0 (ONBOARDING) --- //
+    /* ================================================================
+       ONBOARDING
+    ================================================================ */
     function selectVillain(el, name) {
         document.querySelectorAll('.villain-card').forEach(c => c.classList.remove('selected'));
         el.classList.add('selected');
@@ -365,34 +1292,25 @@
     function prepareContract() {
         state.name = document.getElementById('setupName').value || "Usuário";
         const g = parseFloat(document.getElementById('setupGoal').value);
-        
         if (!state.villain) return alert("Por favor, selecione seu Vilão na tela anterior.");
-        if (!g || g <= 0) return alert("Defina uma meta de economia válida.");
-        
+        if (!g || g <= 0)   return alert("Defina uma meta de economia válida.");
         state.goal = g;
-        
-        // Preenche o contrato visual
         document.getElementById('contract-name').innerText = state.name;
         document.getElementById('contract-villain').innerText = state.villain;
         document.getElementById('contract-goal').innerText = "R$ " + state.goal.toFixed(2);
-        
         goToScreen('screen-contract');
     }
 
     function signContract() {
         const btn = document.getElementById('btn-sign');
-        const signaturePlace = document.getElementById('signature-place');
-        
+        const place = document.getElementById('signature-place');
         btn.disabled = true;
         btn.innerText = "Assinando...";
-        
         setTimeout(() => {
-            // Efeito de assinatura
-            signaturePlace.innerHTML = `<span style="color:#1a237e; font-style:italic;">${state.name}</span>`;
-            
+            place.innerHTML = `<span class="signature-text">${state.name}</span>`;
             setTimeout(() => {
                 alert("Compromisso firmado! Bem-vindo ao Dia 1.");
-                state.started = true; // Marca onboarding como concluído
+                state.started = true;
                 save();
                 updateAll();
                 navTo('screen-dashboard');
@@ -401,14 +1319,14 @@
         }, 1000);
     }
 
-    // --- NAVEGAÇÃO --- //
+    /* ================================================================
+       NAVIGATION
+    ================================================================ */
     function navTo(id, el) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        
         if (id === 'screen-calendar') renderCalendar();
-        if (id === 'screen-ranking') renderRanking();
-        
+        if (id === 'screen-ranking')  renderRanking();
         if (el) {
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
             el.classList.add('active');
@@ -416,30 +1334,34 @@
     }
     function goToScreen(id) { navTo(id); }
 
-    // --- REGISTRO --- //
+    /* ================================================================
+       REGISTER
+    ================================================================ */
     let tempType = 'saved';
 
     function setEntryType(type) {
         tempType = type;
-        document.querySelectorAll('.toggle-btn').forEach(b => b.className = 'toggle-btn');
-        
-        const map = { 'saved': 'btn-save', 'impulse': 'btn-imp', 'planned': 'btn-plan' };
-        const colorMap = { 'saved': 'blue', 'impulse': 'red', 'planned': 'green' };
-        
-        const btn = document.getElementById(map[type]);
-        btn.classList.add('active', colorMap[type]);
+        const ids    = { saved: 'btn-save', impulse: 'btn-imp', planned: 'btn-plan' };
+        const colors = { saved: 'active-blue', impulse: 'active-red', planned: 'active-green' };
+
+        Object.values(ids).forEach(id => {
+            const el = document.getElementById(id);
+            el.className = 'type-btn';
+            el.querySelector('.type-btn-check').innerText = '';
+        });
+
+        const active = document.getElementById(ids[type]);
+        active.classList.add(colors[type]);
+        active.querySelector('.type-btn-check').innerText = '✓';
     }
 
     function addEntry() {
         const val = parseFloat(document.getElementById('reg-amount').value);
         if (!val || val <= 0) return alert("Digite um valor.");
-
-        if (tempType === 'saved') state.todaySaved += val;
+        if (tempType === 'saved')   state.todaySaved   += val;
         if (tempType === 'impulse') state.todayImpulse += val;
         if (tempType === 'planned') state.todayPlanned += val;
-
         state.todayLog.push({ val, type: tempType });
-        
         document.getElementById('reg-amount').value = '';
         renderTodayList();
         save();
@@ -447,31 +1369,34 @@
 
     function renderTodayList() {
         const list = document.getElementById('today-list');
-        list.innerHTML = state.todayLog.map(i => {
-            let color = i.type === 'saved' ? '#1565C0' : (i.type === 'impulse' ? '#C62828' : '#2E7D32');
-            let signal = i.type === 'saved' ? '+' : '-';
-            if(i.type === 'planned') signal = '';
-            
-            let label = i.type === 'saved' ? 'Economia' : (i.type === 'impulse' ? 'Impulso' : 'Planejado');
-            
-            return `<div style="display:flex; justify-content:space-between; padding:8px; border-bottom:1px solid #eee; font-size:13px;">
-                <span style="color:${color};">${label}</span>
-                <strong>${signal} R$ ${i.val.toFixed(2)}</strong>
-            </div>`;
-        }).join('');
+        const labels = { saved: 'Economia', impulse: 'Impulso', planned: 'Planejado' };
+        const dotClass = { saved: 'entry-dot-blue', impulse: 'entry-dot-red', planned: 'entry-dot-green' };
+        const signal  = { saved: '+', impulse: '−', planned: '' };
 
-        const netToday = state.todaySaved - state.todayImpulse;
-        document.getElementById('today-net').innerText = netToday.toFixed(2);
-        document.getElementById('today-net').style.color = netToday >= 0 ? 'var(--blue-save)' : 'var(--alert)';
+        list.innerHTML = state.todayLog.map(i => `
+            <div class="entry-row">
+                <div class="entry-label-wrap">
+                    <div class="entry-dot ${dotClass[i.type]}"></div>
+                    <span>${labels[i.type]}</span>
+                </div>
+                <strong>${signal[i.type]} R$ ${i.val.toFixed(2)}</strong>
+            </div>
+        `).join('');
+
+        const net = state.todaySaved - state.todayImpulse;
+        const netEl = document.getElementById('today-net');
+        netEl.innerText = net.toFixed(2);
+        netEl.style.color = net >= 0 ? 'var(--color-accent-700)' : 'var(--color-danger-700)';
     }
 
-    // --- ENCERRAR DIA --- //
+    /* ================================================================
+       FINISH DAY
+    ================================================================ */
     function finishDay() {
         if (!confirm("Encerrar o dia?")) return;
-
-        state.totalSaved += state.todaySaved;
+        state.totalSaved   += state.todaySaved;
         state.totalImpulse += state.todayImpulse;
-        state.netBalance = state.totalSaved - state.totalImpulse;
+        state.netBalance    = state.totalSaved - state.totalImpulse;
 
         state.history.push({
             day: state.day,
@@ -480,25 +1405,23 @@
             net: state.todaySaved - state.todayImpulse
         });
 
-        // Bots update
         bots.forEach(b => { b.points += Math.floor(Math.random() * 40) - 10; });
 
-        // Badges
-        if(state.day === 1) unlockBadge('b1');
-        if(state.netBalance >= 50) unlockBadge('b2');
-        if(state.netBalance >= (state.goal / 2)) unlockBadge('b3');
-        if(state.netBalance >= state.goal) unlockBadge('b4');
+        if (state.day === 1)                                 unlockBadge('b1');
+        if (state.netBalance >= 50)                          unlockBadge('b2');
+        if (state.netBalance >= (state.goal / 2))            unlockBadge('b3');
+        if (state.netBalance >= state.goal)                  unlockBadge('b4');
 
         state.day++;
-        state.todayLog = [];
-        state.todaySaved = 0;
+        state.todayLog     = [];
+        state.todaySaved   = 0;
         state.todayImpulse = 0;
         state.todayPlanned = 0;
 
         save();
-        
+
         if (state.day > 30) {
-            alert("PARABÉNS! VOCÊ VENCEU O DESAFIO!"); 
+            alert("PARABÉNS! VOCÊ VENCEU O DESAFIO!");
         } else {
             alert("Dia encerrado com sucesso.");
             updateAll();
@@ -508,27 +1431,29 @@
     }
 
     function unlockBadge(id) {
-        if(!state.badges.includes(id)) {
+        if (!state.badges.includes(id)) {
             state.badges.push(id);
             alert("Nova Conquista Desbloqueada! 🏆");
         }
     }
 
-    // --- DASHBOARD UPDATE --- //
+    /* ================================================================
+       DASHBOARD UPDATE
+    ================================================================ */
     function updateAll() {
         document.getElementById('dash-name').innerText = state.name;
-        document.getElementById('dash-day').innerText = state.day;
-        document.getElementById('reg-day').innerText = state.day;
+        document.getElementById('dash-day').innerText  = state.day;
+        document.getElementById('reg-day').innerText   = state.day;
         document.getElementById('dash-villain-display').innerText = state.villain;
-        
+
         const current = state.netBalance;
         document.getElementById('dash-current-net').innerText = current.toFixed(2);
-        document.getElementById('dash-goal-val').innerText = state.goal;
-        
-        let pct = (current / state.goal) * 100;
-        if(pct < 0) pct = 0; 
-        if(pct > 100) pct = 100;
-        
+        document.getElementById('dash-goal-val').innerText    = state.goal;
+        document.getElementById('stat-saved').innerText       = 'R$ ' + state.totalSaved.toFixed(0);
+        document.getElementById('stat-impulse').innerText     = 'R$ ' + state.totalImpulse.toFixed(0);
+
+        let pct = state.goal > 0 ? (current / state.goal) * 100 : 0;
+        pct = Math.max(0, Math.min(100, pct));
         document.getElementById('dash-percent').innerText = Math.floor(pct) + "%";
         document.getElementById('dash-progress-bar').style.width = pct + "%";
 
@@ -536,57 +1461,62 @@
         document.getElementById('dash-points').innerText = points;
 
         document.getElementById('badge-container').innerHTML = BADGES.map(b => `
-            <div class="badge-item ${state.badges.includes(b.id)?'unlocked':''}">
-                <div style="font-size:24px;">${b.icon}</div>
-                <div style="font-size:9px; font-weight:bold;">${b.name}</div>
+            <div class="badge-item ${state.badges.includes(b.id) ? 'unlocked' : ''}">
+                <div class="badge-emoji">${b.icon}</div>
+                <div class="badge-name">${b.name}</div>
             </div>
         `).join('');
     }
 
-    // --- CALENDÁRIO --- //
+    /* ================================================================
+       CALENDAR
+    ================================================================ */
     function renderCalendar() {
         const grid = document.getElementById('cal-grid');
         grid.innerHTML = '';
-        for(let i=1; i<=30; i++) {
+        for (let i = 1; i <= 30; i++) {
             const h = state.history.find(x => x.day === i);
             let cls = '';
-            let content = i;
-            
-            if(h) {
-                if(h.net > 0) cls = 'green';
-                else if(h.net < 0) cls = 'red';
-                else cls = 'orange';
-                content += `<br><span>R$${Math.round(h.net)}</span>`;
+            let extra = '';
+            if (h) {
+                cls   = h.net > 0 ? 'green' : (h.net < 0 ? 'red' : 'orange');
+                extra = `<span>R$${Math.round(h.net)}</span>`;
             } else if (i === state.day) {
                 cls = 'active';
             }
-            
-            grid.innerHTML += `<div class="cal-day ${cls}">${content}</div>`;
+            grid.innerHTML += `<div class="cal-day ${cls}">${i}${extra}</div>`;
         }
     }
 
-    // --- RANKING --- //
+    /* ================================================================
+       RANKING
+    ================================================================ */
     function renderRanking() {
         const myPoints = Math.max(0, Math.floor(state.netBalance));
         const list = [...bots, { name: state.name + " (Você)", points: myPoints, me: true }];
-        
-        list.sort((a,b) => b.points - a.points);
-        
+        list.sort((a, b) => b.points - a.points);
+
+        const medalClass = ['gold', 'silver', 'bronze'];
+
         document.getElementById('ranking-list').innerHTML = list.map((u, idx) => `
-            <div class="rank-row ${u.me?'highlight':''}">
-                <div style="display:flex; align-items:center; gap:10px;">
-                    <b style="color:#999; font-size:12px;">${idx+1}</b>
-                    <span>${u.name}</span>
+            <div class="rank-row ${u.me ? 'highlight' : ''}">
+                <div class="rank-left">
+                    <div class="rank-pos ${medalClass[idx] || ''}">${idx + 1}</div>
+                    <span class="rank-name">${u.name}</span>
                 </div>
-                <strong>${u.points} pts</strong>
+                <span class="rank-pts">${Math.max(0, u.points)} pts</span>
             </div>
         `).join('');
     }
 
-    function save() { localStorage.setItem('eco_v5_day0', JSON.stringify(state)); }
+    /* ================================================================
+       PERSISTENCE
+    ================================================================ */
+    function save() { localStorage.setItem('eco_v6_day0', JSON.stringify(state)); }
 
+    /* boot */
     init();
-
+    setEntryType('saved');
 </script>
 </body>
 </html>
